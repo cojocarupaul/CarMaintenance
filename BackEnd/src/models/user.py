@@ -38,6 +38,10 @@ class User(Base, UserAdapter):
         return db_session.query(cls).filter_by(email=email).first()
 
     @classmethod
+    def get_user_by_session(cls, db_session, session_id):
+        return db_session.query(cls).filter_by(session=session_id).first()
+
+    @classmethod
     def login(cls, db_session, body):
         user = cls.get_user_by_email(db_session, body.get('email'))
         if not user:
@@ -54,3 +58,12 @@ class User(Base, UserAdapter):
         user.session = session_id
         db_session.commit()
         return session_id
+
+    @classmethod
+    def logout(cls, db_session, session_id):
+        user = cls.get_user_by_session(db_session, session_id)
+        if not user:
+            raise HTTPException("User not found", status=400)
+
+        user.session = None
+        db_session.commit()
