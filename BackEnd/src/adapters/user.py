@@ -1,4 +1,5 @@
 from binascii import a2b_qp
+from numpy import random
 import bcrypt
 import hashlib
 
@@ -27,3 +28,7 @@ class UserAdapter:
             salt = bcrypt.gensalt()
         password = bcrypt.hashpw(a2b_qp(password), salt)
         return password.decode('utf-8'), salt.decode('utf-8')
+
+    @staticmethod
+    def generate_session():
+        return hashlib.sha256(random.bytes(1024)).hexdigest()

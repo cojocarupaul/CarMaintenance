@@ -23,7 +23,7 @@ def create_database(host_name, user_name, password, database_name):
         passwd=password,
     )
     my_cursor = mydb.cursor()
-    my_cursor.execute("CREATE DATABASE IF NOT EXISTS ?", database_name)
+    my_cursor.execute("CREATE DATABASE IF NOT EXISTS "+database_name)
     my_cursor.close()
     mydb.close()
 
